@@ -21,6 +21,8 @@ export default {
       email : "",
       phone_number : "",
       des : "",
+      isCheckout : true,
+      process : "Đang xử lý",
     }
   },
   mounted() {
@@ -30,8 +32,9 @@ export default {
   methods: {
     setupEcho() {
       Echo.channel("checkout").listen("CheckoutEvent", e => {
-        console.log(1)
-        console.log(e);
+        // console.log(1)
+        // console.log(e);
+        this.process = e.message
       });
     },
     getCard() {
@@ -53,6 +56,7 @@ export default {
         alert("Card empty")
         return;
       }
+      this.isCheckout = false
       await checkout.post("/checkout",{
         address : this.address,
         email : this.email,
@@ -63,8 +67,10 @@ export default {
       }).then((res ) => {
         alert("success")
         localStorage.setItem("card", JSON.stringify([]))
+        this.isCheckout = true
         // this.$router.push('/');
       }).catch((err) => {
+        this.isCheckout = true
         alert("error")
         console.log(err)
       })
@@ -119,7 +125,8 @@ export default {
         <label for="des">Des</label>
         <textarea class="form-control" v-model="des" id="des"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary mt-3" @click.prevent="checkout">Checkout</button>
+      <button type="submit" v-if="isCheckout" class="btn btn-primary mt-3" @click.prevent="checkout">Checkout</button>
+      <span class="btn btn-primary" v-if="!isCheckout">{{ this.process}}</span>
     </form>
   </div>
 </template>
