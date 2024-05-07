@@ -24,6 +24,7 @@ window.Echo = new Echo({
 </script>
 
 <template>
+  <notifications position="top right" />
   <RouterView />
 </template>
 

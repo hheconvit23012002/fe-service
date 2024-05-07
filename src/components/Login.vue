@@ -20,8 +20,10 @@ export default defineComponent({
       }).then((res ) => {
         localStorage.setItem('token', res.data.token);
         console.log(res.data.token)
+        this.$notify({ type: "success",title: "Login success", text: "thanh cong", duration: 1000 });
         this.$router.push('/');
       }).catch((err) => {
+        this.$notify({ type: "error",title: "Login error", text: "that bai" });
         console.log(err)
       })
     }

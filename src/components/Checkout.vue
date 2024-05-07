@@ -35,6 +35,7 @@ export default {
         // console.log(1)
         // console.log(e);
         this.process = e.message
+        this.$notify({ type: "warn",title: "Process", text: this.process, duration : 3000 });
       });
     },
     getCard() {
@@ -65,13 +66,15 @@ export default {
         item : this.card
         // eslint-disable-next-line no-unused-vars
       }).then((res ) => {
-        alert("success")
+        // this.$notify({ type: "success",title: "Checkout", text: "success" });
         localStorage.setItem("card", JSON.stringify([]))
+        alert("success")
         this.isCheckout = true
-        // this.$router.push('/');
+        this.$router.push('/');
       }).catch((err) => {
         this.isCheckout = true
         alert("error")
+        // this.$notify({ type: "error",title: "Checkout", text: err.message + err.response.data });
         console.log(err)
       })
     }
@@ -125,8 +128,8 @@ export default {
         <label for="des">Des</label>
         <textarea class="form-control" v-model="des" id="des"></textarea>
       </div>
-      <button type="submit" v-if="isCheckout" class="btn btn-primary mt-3" @click.prevent="checkout">Checkout</button>
-      <span class="btn btn-primary" v-if="!isCheckout">{{ this.process}}</span>
+      <button type="submit" :disabled="!isCheckout" class="btn btn-primary mt-3" @click.prevent="checkout">Checkout</button>
+<!--      <span class="btn btn-primary" v-if="!isCheckout">{{ this.process}}</span>-->
     </form>
   </div>
 </template>
